@@ -1,0 +1,6 @@
+package com.hm.sortingservice.constants;
+
+public final class SortingServiceConstants {
+
+	public static final String INDEX_PAGE = "index";
+}

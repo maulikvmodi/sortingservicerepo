@@ -1,0 +1,22 @@
+package com.hm.sortingservice.sortingservice.beans;
+
+
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public class SortingValuesRepository {
+
+	@Autowired
+	JdbcTemplate jdbcTemplate;
+	
+	class SortingValuesWrapper implements RowMapper<SortedValuesBean>
+	
+	public int insertSortedData(SortedValuesBean sortedValues) {
+		return jdbcTemplate.update("insert into sortedvalues(originalstring, sortedstring, createddate) values(?,?,?)",
+				new Object[] {sortedValues.getOriginalstring(), sortedValues.getSortedstring(), sortedValues.getCreateddate()});
+	}
+}

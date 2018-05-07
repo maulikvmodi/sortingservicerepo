@@ -1,0 +1,48 @@
+/**
+ * 
+ */
+var randomNumberData;
+$(document).ready(function () {
+	$('#btnSort').hide();
+	$('#generateRandom').click(function(e){
+		console.log('button clicked');
+		//e.preventDefault();
+		$.ajax({
+			url: "getRandomNumbers",
+			type: "GET"	,
+			success : function(data){
+				console.log('success');
+				console.log(data);
+				$('#divGeneratedNumbers').text(data);
+				randomNumberData = data;
+				$('#btnSort').show();
+			}
+		});
+	});
+	
+	$('#btnSort').click(function(e){
+		console.log('random numbers to be sorted:');
+		console.log(randomNumberData);
+		randomNumberData = JSON.parse(randomNumberData);
+		//var obj = {randomObj : randomNumberData};
+		$.ajax({
+			url: "sortRandomNumbers",
+			type: "POST",
+			data:{randomObj: JSON.stringify(randomNumberData)},
+			success : function(data){
+				console.log('success');
+				console.log(data);
+				var sortedArray = JSON.parse(data);
+				//console.log(sortedArray);
+				sortedArray.sort(function(a,b){
+					return parseInt(a.key) - parseInt(b.key);
+				});
+				for(var sortedArrayCount =0 ; sortedArrayCount< sortedArray.length; sortedArrayCount++){
+					$('<div>').css({'word-wrap':'break-word'}).text(sortedArray[key].value).appendTo('.form');
+					//console.log(sortedArray.i);
+				}
+			}
+		});
+	});
+	
+});

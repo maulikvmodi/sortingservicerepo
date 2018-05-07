@@ -1,0 +1,44 @@
+/**
+ * 
+ */
+var randomNumberData;
+$(document).ready(function () {
+	$('#btnSort').hide();
+	$('#generateRandom').click(function(e){
+		console.log('button clicked');
+		$.ajax({
+			url: "getRandomNumbers",
+			type: "GET"	,
+			success : function(data){
+				console.log('success');
+				console.log(data);
+				$('#divGeneratedNumbers').text(data);
+				randomNumberData = data;
+				$('#btnSort').show();
+			}
+		});
+	});
+	
+	$('#btnSort').click(function(e){
+		console.log('random numbers to be sorted:');
+		console.log(randomNumberData);
+		randomNumberData = JSON.parse(randomNumberData);
+		$.ajax({
+			url: "sortRandomNumbers",
+			type: "POST",
+			data:{randomObj: JSON.stringify(randomNumberData)},
+			success : function(data){
+				console.log('success');
+				console.log(data);
+				var sortedArray = JSON.parse(data);
+				
+				for(var sortedArrayCount =0 ; sortedArrayCount< sortedArray.length; sortedArrayCount++){
+					var obj = sortedArray[sortedArrayCount];
+					$('<div>').css({'word-wrap':'break-word'}).text('After Iteration').appendTo('.form');
+					$('<div>').css({'word-wrap':'break-word'}).text(obj.value).appendTo('.form');
+				}
+			}
+		});
+	});
+	
+});

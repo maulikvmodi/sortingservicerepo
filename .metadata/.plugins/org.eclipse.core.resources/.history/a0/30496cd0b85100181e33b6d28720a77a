@@ -1,0 +1,27 @@
+package com.hm.sortingservice.sortingservice;
+
+import static org.junit.Assert.assertNotNull;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
+
+import com.hm.sortingservice.sortingservice.controller.SortNumbersController;
+
+@RunWith(SpringRunner.class)
+@SpringBootTest
+public class SortingServiceApplicationTests {
+
+	@Test
+	public void contextLoads() {
+	}
+	
+	@Test
+	public void checkRandomNumberGeneration() {
+		SortNumbersController controller = new SortNumbersController();
+		String randomNumberArray = controller.getRandomNumbersArray();
+		assertNotNull(randomNumberArray);
+	}
+
+}

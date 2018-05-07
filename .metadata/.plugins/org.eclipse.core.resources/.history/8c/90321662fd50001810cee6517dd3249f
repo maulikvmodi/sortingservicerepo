@@ -1,0 +1,94 @@
+package com.hm.sortingservice.sortingservice.controller;
+
+import java.util.Random;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+
+
+@RestController
+public class SortNumbersController {
+
+	private int sortedArrayIncCounter=1;
+	
+	@RequestMapping(value="/getRandomNumbers", method=RequestMethod.GET)
+	public @ResponseBody String getRandomNumbersArray() {
+		System.out.println("insied getRandomNumbersArray");
+		JSONArray randomNumArray = new JSONArray();
+		
+		for(int randomCount = 0; randomCount < 50; randomCount++) {
+			Random r = new Random();
+			randomNumArray.put(r.ints(1,(100+1)).limit(1).findFirst().getAsInt());
+		}
+		return randomNumArray.toString();
+	}
+	
+	@RequestMapping(value="/sortRandomNumbers", method=RequestMethod.POST)
+	public @ResponseBody String sortRandomArray(@RequestParam("randomObj") String randomArrayString) {
+		try {
+			System.out.println("JSONArray: " + randomArrayString);
+			JSONArray randomNumberArray = new JSONArray(randomArrayString);
+			JSONArray sortedArray = new JSONArray();
+			implementSortingAlgorithm(0, randomNumberArray.length()-1,randomNumberArray, sortedArray);
+			System.out.println("Sorted Array Length: " + sortedArray.length());
+			return sortedArray.toString();
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return null; 
+	}
+	
+	
+	private void implementSortingAlgorithm(int lowerIndex, int higherIndex, JSONArray randomNumberArray, JSONArray sortedArray) 
+			throws JSONException {
+        
+        int i = lowerIndex;
+        int j = higherIndex;
+        int pivot = (int)randomNumberArray.get(lowerIndex+(higherIndex-lowerIndex)/2);
+        while (i <= j) {
+           
+            while ((int)randomNumberArray.get(i) < pivot) {
+                i++;
+            }
+            while ((int)randomNumberArray.get(j) > pivot) {
+                j--;
+            }
+            if (i <= j) {
+            	swapNumbers(i, j,randomNumberArray);
+                i++;
+                j--;
+            }
+        }
+        System.out.println("Sorted Array");
+        sortedArray.put(randomNumberArray);
+        sortedArrayIncCounter++;
+        System.out.println();
+        for(int var = 0; var< randomNumberArray.length(); var++) {
+        	System.out.print(randomNumberArray.get(var));
+        	System.out.print(" ");
+        }
+        System.out.println();
+        if (lowerIndex < j)
+        	implementSortingAlgorithm(lowerIndex, j, randomNumberArray, sortedArray);
+        if (i < higherIndex)
+        	implementSortingAlgorithm(i, higherIndex, randomNumberArray, sortedArray);
+    }
+	
+	private void swapNumbers(int firstNumber, int secondNumber, JSONArray randomNumberArray) {
+		try {
+			int tempVar;
+			tempVar = randomNumberArray.getInt(firstNumber);
+			randomNumberArray.put(firstNumber, secondNumber);
+			randomNumberArray.put(secondNumber, tempVar);
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+}
+

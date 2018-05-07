@@ -1,0 +1,17 @@
+package com.hm.sortingservice.sortingservice.beans;
+
+import java.util.Date;
+
+public class SortedValuesBean {
+	
+	public SortedValuesBean{
+		super();
+	}
+	
+	private int id;
+	private String originalstring;
+	private String sortedstring;
+	private Date createddate;
+	
+	
+}
